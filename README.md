@@ -18,7 +18,7 @@ Commands:
 Options:
       --version   Show version number                                  [boolean]
   -a, --authFile  path to the auth file                      [string] [required]
-  -o, --outFile   path to download the CSV file                         [string]
+  -o, --outFile   path to write the output                              [string]
       --help      Show help                                            [boolean]
 ```
 

@@ -24,7 +24,7 @@ const main = async (): Promise<void> => {
       outFile: {
         type: "string",
         alias: "o",
-        description: "path to download the CSV file",
+        description: "path to write the output",
       },
     })
     .command("auth", "Get authentication results")
