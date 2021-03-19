@@ -6,11 +6,11 @@ type CreateClientParams = {
 };
 
 export class MindLoggerClient {
-  public static baseURL = `https://api.mindlogger.org`;
-  public static url = (path: string): URL =>
+  public static readonly baseURL = `https://api.mindlogger.org`;
+  public static readonly url = (path: string): URL =>
     new URL(path, MindLoggerClient.baseURL);
 
-  public static createClient = async ({
+  public static readonly createClient = async ({
     username,
     password,
   }: CreateClientParams): Promise<MindLoggerClient> => {

@@ -35,7 +35,7 @@ Name | Type |
 
 **Returns:** [*MindLoggerClient*](mindloggerclient.md)
 
-Defined in: [MindLoggerClient.ts:34](https://github.com/elierotenberg/mindlogger-node/blob/7a55911/src/MindLoggerClient.ts#L34)
+Defined in: [MindLoggerClient.ts:34](https://github.com/elierotenberg/mindlogger-node/blob/25434e4/src/MindLoggerClient.ts#L34)
 
 ## Properties
 
@@ -43,15 +43,15 @@ Defined in: [MindLoggerClient.ts:34](https://github.com/elierotenberg/mindlogger
 
 • `Private` `Readonly` **token**: *string*
 
-Defined in: [MindLoggerClient.ts:34](https://github.com/elierotenberg/mindlogger-node/blob/7a55911/src/MindLoggerClient.ts#L34)
+Defined in: [MindLoggerClient.ts:34](https://github.com/elierotenberg/mindlogger-node/blob/25434e4/src/MindLoggerClient.ts#L34)
 
 ___
 
 ### baseURL
 
-▪ `Static` **baseURL**: *string*
+▪ `Readonly` `Static` **baseURL**: *https://api.mindlogger.org*
 
-Defined in: [MindLoggerClient.ts:9](https://github.com/elierotenberg/mindlogger-node/blob/7a55911/src/MindLoggerClient.ts#L9)
+Defined in: [MindLoggerClient.ts:9](https://github.com/elierotenberg/mindlogger-node/blob/25434e4/src/MindLoggerClient.ts#L9)
 
 ## Methods
 
@@ -71,7 +71,7 @@ Name | Type |
 
 **Returns:** *Promise*<unknown\>
 
-Defined in: [MindLoggerClient.ts:40](https://github.com/elierotenberg/mindlogger-node/blob/7a55911/src/MindLoggerClient.ts#L40)
+Defined in: [MindLoggerClient.ts:40](https://github.com/elierotenberg/mindlogger-node/blob/25434e4/src/MindLoggerClient.ts#L40)
 
 ___
 
@@ -87,7 +87,7 @@ Name | Type |
 
 **Returns:** *Promise*<unknown\>
 
-Defined in: [MindLoggerClient.ts:58](https://github.com/elierotenberg/mindlogger-node/blob/7a55911/src/MindLoggerClient.ts#L58)
+Defined in: [MindLoggerClient.ts:58](https://github.com/elierotenberg/mindlogger-node/blob/25434e4/src/MindLoggerClient.ts#L58)
 
 ___
 
@@ -97,13 +97,13 @@ ___
 
 **Returns:** *Promise*<unknown\>
 
-Defined in: [MindLoggerClient.ts:56](https://github.com/elierotenberg/mindlogger-node/blob/7a55911/src/MindLoggerClient.ts#L56)
+Defined in: [MindLoggerClient.ts:56](https://github.com/elierotenberg/mindlogger-node/blob/25434e4/src/MindLoggerClient.ts#L56)
 
 ___
 
 ### createClient
 
-▸ `Static`**createClient**(`__namedParameters`: CreateClientParams): *Promise*<[*MindLoggerClient*](mindloggerclient.md)\>
+▸ `Readonly` `Static`**createClient**(`__namedParameters`: CreateClientParams): *Promise*<[*MindLoggerClient*](mindloggerclient.md)\>
 
 #### Parameters:
 
@@ -113,13 +113,13 @@ Name | Type |
 
 **Returns:** *Promise*<[*MindLoggerClient*](mindloggerclient.md)\>
 
-Defined in: [MindLoggerClient.ts:13](https://github.com/elierotenberg/mindlogger-node/blob/7a55911/src/MindLoggerClient.ts#L13)
+Defined in: [MindLoggerClient.ts:13](https://github.com/elierotenberg/mindlogger-node/blob/25434e4/src/MindLoggerClient.ts#L13)
 
 ___
 
 ### url
 
-▸ `Static`**url**(`path`: *string*): URL
+▸ `Readonly` `Static`**url**(`path`: *string*): URL
 
 #### Parameters:
 
@@ -129,4 +129,4 @@ Name | Type |
 
 **Returns:** URL
 
-Defined in: [MindLoggerClient.ts:10](https://github.com/elierotenberg/mindlogger-node/blob/7a55911/src/MindLoggerClient.ts#L10)
+Defined in: [MindLoggerClient.ts:10](https://github.com/elierotenberg/mindlogger-node/blob/25434e4/src/MindLoggerClient.ts#L10)
