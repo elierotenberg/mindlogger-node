@@ -1,89 +1,118 @@
 #!/usr/bin/env node
 import { promises } from "fs";
+import { resolve } from "path";
 
-import * as t from "typed-assert";
 import yargs from "yargs";
-import { load } from "js-yaml";
+import { hideBin } from "yargs/helpers";
+import { z } from "zod";
 
-import { MindLoggerClient } from ".";
+import { Client } from ".";
 
 if (require.main !== module) {
-  console.error("this should be the main module");
+  console.error(`this should be the main module`);
   process.exit(1);
 }
 
 const main = async (): Promise<void> => {
-  const argv = yargs(process.argv.slice(2))
-    .options({
-      authFile: {
-        type: "string",
-        alias: "a",
-        description: "path to the auth file",
-        demandOption: true,
-      },
-      outFile: {
-        type: "string",
-        alias: "o",
-        description: "path to write the output",
-      },
-    })
-    .command("auth", "Get authentication results")
-    .command("download-applet-data", "Download all data from an applet", {
-      appletId: {
-        type: "string",
-        description: "Applet Id",
-        demandOption: true,
-      },
-    })
-    .help()
-    .strict()
-    .demandCommand(1).argv;
-
-  const command = argv._[0];
-
-  t.isString(command);
-
-  t.isString(argv.authFile);
-
-  const authConfig = load(
-    await promises.readFile(argv.authFile, { encoding: "utf8" }),
-  );
-
-  t.isRecord(authConfig, "auth file should be a record");
-
-  const { username, password } = authConfig;
-  t.isString(username, "username should be a string");
-  t.isString(password, "password should be a string");
-
-  t.isOptionOfType(
-    argv.authFile,
-    t.isString,
-    "authFile should be undefined or a string",
-  );
-
-  const client = await MindLoggerClient.createClient({ username, password });
-
-  const print = async (data: unknown): Promise<void> => {
-    if (argv.outFile) {
-      await promises.writeFile(
-        argv.outFile,
-        typeof data === "string" ? data : JSON.stringify(data, null, 2),
-        { encoding: "utf8" },
-      );
+  const print = async (
+    outFile: undefined | string,
+    data: unknown,
+  ): Promise<void> => {
+    const json = JSON.stringify(data, null, 2);
+    if (outFile) {
+      await promises.writeFile(resolve(__dirname, outFile), json, {
+        encoding: `utf-8`,
+      });
     } else {
       console.log(data);
     }
   };
 
-  if (command === "auth") {
-    await print(await client.getAuth());
-  } else if (command === "download-applet-data") {
-    const { appletId } = argv;
-    t.isString(appletId, "appletId should be a string");
-    await print(await client.getAppletData(appletId));
-  } else {
-    throw new TypeError(`invalid command: ${command}`);
-  }
+  await yargs(hideBin(process.argv))
+    .options({
+      username: {
+        type: `string`,
+        alias: `u`,
+        demandOption: true,
+        description: `User name`,
+      },
+      password: {
+        type: `string`,
+        alias: `p`,
+        demandOption: true,
+        description: `Password`,
+      },
+      outFile: {
+        type: `string`,
+        alias: `o`,
+        description: `Optional output file`,
+      },
+    })
+    .command(
+      `authentication`,
+      `Get authentication results`,
+      async ({ argv }) => {
+        const { username, password, outFile } = z
+          .object({
+            username: z.string(),
+            password: z.string(),
+            outFile: z.string().optional(),
+          })
+          .parse(argv);
+        const client = await Client.createClient(username, password);
+        await print(outFile, await client.getAuth());
+      },
+    )
+    .command(
+      `applet-info`,
+      `Get applet info`,
+      {
+        appletId: {
+          type: `string`,
+          description: `Applet Id`,
+          demandOption: true,
+        },
+      },
+      async ({ argv }) => {
+        const { username, password, outFile, appletId } = z
+          .object({
+            username: z.string(),
+            password: z.string(),
+            outFile: z.string().optional(),
+            appletId: z.string(),
+          })
+          .parse(argv);
+        const client = await Client.createClient(username, password);
+        await print(outFile, await client.getAppletInfo(appletId));
+      },
+    )
+    .command(
+      `applet-data`,
+      `Get applet data`,
+      {
+        appletId: {
+          type: `string`,
+          description: `Applet Id`,
+          demandOption: true,
+        },
+      },
+      async ({ argv }) => {
+        const { username, password, outFile, appletId } = z
+          .object({
+            username: z.string(),
+            password: z.string(),
+            outFile: z.string().optional(),
+            appletId: z.string(),
+          })
+          .parse(argv);
+        const client = await Client.createClient(username, password);
+        await print(outFile, await client.getAppletData(appletId));
+      },
+    )
+    .help()
+    .strict()
+    .demandCommand(1)
+    .parseAsync();
 };
 
 main().catch((error) => {

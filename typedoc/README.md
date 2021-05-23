@@ -6,4 +6,4 @@ mindlogger-node
 
 ### Classes
 
-- [MindLoggerClient](classes/mindloggerclient.md)
+- [Client](classes/client.md)

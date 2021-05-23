@@ -1,38 +1,76 @@
 MindLogger Node Client
 
-### Installation
+## Installation
 
 ```
 npm i mindlogger-node
 ```
 
-### Usage
+## Local development
 
-#### CLI
+- Fork / clone
+- Run `npm install`
+- Create `config.test.json` similar to `config.test.sample.json`:
+
+```json
+{
+  "username": "____________",
+  "password": "____________",
+  "applets": [
+    {
+      "appletId": "____________",
+      "appletPassword": "____________"
+    }
+  ]
+}
+```
+
+- Run `npm test`
+
+## Usage
+
+### CLI
 
 ```
 Commands:
-  mindlogger-cli auth                  Get authentication results
-  mindlogger-cli download-applet-data  Download all data from an applet
+  cli.js authentication  Get authentication results
+  cli.js applet-info     Get applet info
+  cli.js applet-data     Get applet data
 
 Options:
       --version   Show version number                                  [boolean]
-  -a, --authFile  path to the auth file                      [string] [required]
-  -o, --outFile   path to write the output                              [string]
+  -u, --username  User name                                  [string] [required]
+  -p, --password  Password                                   [string] [required]
+  -o, --outFile   Optional output file                                  [string]
       --help      Show help                                            [boolean]
 ```
 
-#### Library
+### Library
+
+#### Client
 
 ```ts
-import { MindLoggerClient } from "mindlogger-node";
+import { Client } from "mindlgoger-node";
 
-const client = await MindLoggerClient.createClient({
-  username: "...",
-  password: "...",
-});
+const client = await Client.createClient("<username>", "<password>");
 
-await client.getAppletData("...");
+const appletInfo = await client.getAppletInfo("<appletId>");
+const appletData = await client.getAppletData("<appletId>");
+const responses = decryptAppletResponses(
+  appletInfo,
+  appletData,
+  "<appletPassword>"
+);
 ```
 
 See [the generated docs](docs).
+
+## Data flow
+
+### Applet creation
+
+![Applet creation](./docs/applet-creation.mmd.svg)
+
+### Applet response
+
+![Applet creation](./docs/applet-response.mmd.svg)

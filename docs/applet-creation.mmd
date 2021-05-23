@@ -1,0 +1,12 @@
+sequenceDiagram
+  participant AppletManagerUser
+  participant WebAdminFrontEnd
+  participant BackendHttpServer
+  participant BackendStorage
+  participant AppFrontEnd
+  participant RespondentUser
+
+  AppletManagerUser->>WebAdminFrontEnd: input plain text applet password
+  WebAdminFrontEnd->>BackendHttpServer: derive and send public key
+  BackendHttpServer->>BackendStorage: store public key
+  

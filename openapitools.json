@@ -1,0 +1,20 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "5.1.0",
+    "generators": {
+      "v1": {
+        "generatorName": "typescript-fetch",
+        "glob": "openapi.spec.json",
+        "output": "openapi",
+        "skipValidateSpec": true,
+        "additionalProperties": {
+          "supportsES6": true,
+          "npmName": "mindlogger-node-openapi",
+          "typescriptThreePlus": true
+        }
+      }
+    }
+  }
+}<

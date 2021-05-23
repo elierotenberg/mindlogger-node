@@ -1,12 +1,14 @@
 {
   "name": "mindlogger-node",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "MindLogger client for node (CLI and library)",
   "main": "build/index.js",
   "scripts": {
     "build": "tsc -p .",
     "cli": "node build/cli.js",
-    "docs": "typedoc"
+    "docs": "typedoc && ./build-mermaid.sh",
+    "test:src": "jest src/__tests__/*.test.ts",
+    "test": "jest build/__tests__/*.test.js"
   },
   "bin": {
     "mindlogger-cli": "./build/cli.js"
@@ -22,28 +24,34 @@
   },
   "homepage": "https://github.com/elierotenberg/mindlogger-programmatic-bridge#readme",
   "devDependencies": {
-    "@types/js-yaml": "^4.0.0",
-    "@types/node": "^14.14.35",
-    "@types/node-fetch": "^2.5.8",
-    "@types/yargs": "^16.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.18.0",
-    "@typescript-eslint/parser": "^4.18.0",
-    "eslint": "^7.22.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-prettier": "^3.3.1",
-    "prettier": "^2.2.1",
+    "@babel/preset-env": "^7.14.2",
+    "@babel/preset-typescript": "^7.13.0",
+    "@mermaid-js/mermaid-cli": "^8.10.1",
+    "@openapitools/openapi-generator-cli": "^2.3.0",
+    "@types/jest": "^26.0.23",
+    "@types/js-yaml": "^4.0.1",
+    "@types/node": "^15.6.0",
+    "@types/node-fetch": "^2.5.10",
+    "@types/yargs": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.24.0",
+    "@typescript-eslint/parser": "^4.24.0",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.2",
+    "eslint-plugin-prettier": "^3.4.0",
+    "jest": "^26.6.3",
+    "npm-check-updates": "^11.5.13",
+    "prettier": "^2.3.0",
     "ts-node": "^9.1.1",
-    "typedoc": "^0.20.32",
-    "typedoc-plugin-markdown": "^3.6.0",
-    "typescript": "^4.2.3"
+    "typedoc": "^0.20.36",
+    "typedoc-plugin-markdown": "^3.8.1",
+    "typescript": "^4.2.4"
   },
   "dependencies": {
-    "js-yaml": "^4.0.0",
+    "js-yaml": "^4.1.0",
     "node-fetch": "^2.6.1",
-    "tslib": "^2.1.0",
-    "typed-assert": "^1.0.7",
-    "typed-utilities": "^1.8.2",
-    "yargs": "^16.2.0"
+    "tslib": "^2.2.0",
+    "yargs": "^17.0.1",
+    "zod": "^3.0.2"
   }
 }

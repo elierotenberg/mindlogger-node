@@ -1,0 +1,15 @@
+sequenceDiagram
+  participant BackendStorage
+  participant BackendHttpServer
+  participant AppFrontEnd
+  participant RespondentUser
+
+  RespondentUser->>AppFrontEnd: select applet
+  AppFrontEnd->>BackendHttpServer: request applet config
+  BackendHttpServer->>BackendStorage: request applet config
+  BackendStorage->>BackendHttpServer: applet public key
+  BackendHttpServer->>AppFrontEnd: applet config with public key
+  AppFrontEnd->>RespondentUser: load applet
+  RespondentUser->>AppFrontEnd: fill assessment
+  AppFrontEnd->>BackendHttpServer: (data encrypted with user private key + applet public key) + user public key
+  BackendHttpServer->>BackendStorage: encrypted data + user public key

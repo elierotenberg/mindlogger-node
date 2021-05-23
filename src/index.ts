@@ -1,1 +1,1 @@
-export * from "./MindLoggerClient";
+export * from "./lib/Client";

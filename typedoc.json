@@ -2,7 +2,7 @@
   "entryPoints": [
     "./src/index.ts"
   ],
-  "out": "docs",
+  "out": "typedoc",
   "excludeExternals": true,
   "plugin": "typedoc-plugin-markdown",
   "readme": "none"

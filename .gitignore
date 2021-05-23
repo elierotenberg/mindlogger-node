@@ -3,4 +3,4 @@ build
 tmp/*
 !.gitkeep
 
-auth.local.yml
+config.test.json
