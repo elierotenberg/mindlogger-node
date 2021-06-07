@@ -1,9 +1,7 @@
 import { promises } from "fs";
 import { join } from "path";
 
-import { z } from "zod";
-
-import { Client } from "../lib/Client";
+import { AuthTokenService, Client, ClientConfig } from "../lib/Client";
 import { decryptAppletResponses } from "../lib/Encryption";
 
 const config = promises
@@ -11,23 +9,24 @@ const config = promises
     encoding: `utf-8`,
   })
   .then((json) => JSON.parse(json))
-  .then(
-    z.object({
-      username: z.string(),
-      password: z.string(),
-      applets: z.array(
-        z.object({
-          appletId: z.string(),
-          appletPassword: z.string(),
-        }),
-      ),
-    }).parse,
-  );
+  .then(ClientConfig.parse);
+
+const authTokenService = config.then(
+  (config) => new AuthTokenService(config.auth),
+);
+
+beforeAll(async () => {
+  (await authTokenService).start();
+});
+
+afterAll(async () => {
+  (await authTokenService).stop();
+});
 
 describe(`Encryption`, () => {
   test(`decryptAppletResponses`, async () => {
-    const { username, password, applets } = await config;
-    const client = await Client.createClient(username, password);
+    const { applets } = await config;
+    const client = new Client(await authTokenService);
     await Promise.all(
       applets.map(async ({ appletId, appletPassword }) => {
         const [appletInfo, appletData] = await Promise.all([

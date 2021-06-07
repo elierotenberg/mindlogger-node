@@ -4,3 +4,5 @@ tmp/*
 !.gitkeep
 
 config.test.json
+auth.cache.test.json
+auth.cache.test.json.lock

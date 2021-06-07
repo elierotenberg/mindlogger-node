@@ -1,9 +1,7 @@
 import { promises } from "fs";
 import { join } from "path";
 
-import { z } from "zod";
-
-import { Client } from "../lib/Client";
+import { AuthTokenService, Client, ClientConfig } from "../lib/Client";
 import { AppletData, AppletInfo, Authentication } from "../lib/Responses";
 
 const config = promises
@@ -11,37 +9,29 @@ const config = promises
     encoding: `utf-8`,
   })
   .then((json) => JSON.parse(json))
-  .then(
-    z.object({
-      username: z.string(),
-      password: z.string(),
-      applets: z.array(
-        z.object({
-          appletId: z.string(),
-          appletPassword: z.string(),
-        }),
-      ),
-    }).parse,
-  );
+  .then(ClientConfig.parse);
+
+const authTokenService = config.then(
+  (config) => new AuthTokenService(config.auth),
+);
+
+beforeAll(async () => {
+  (await authTokenService).start();
+});
+
+afterAll(async () => {
+  (await authTokenService).stop();
+});
 
 describe(`Client`, () => {
   test(`getAuth`, async () => {
-    const { username, password } = await config;
-    await expect(
-      Client.createClient(username, `wrong password`),
-    ).rejects.toBeTruthy();
-    await expect(
-      Client.createClient(`wrong username`, password),
-    ).rejects.toBeTruthy();
-    const client = await Client.createClient(username, password);
-    await expect(
-      client.getAuth().then(Authentication.parse),
-    ).resolves.toBeTruthy();
+    const client = new Client(await authTokenService);
+    expect(client.getAuth().then(Authentication.parse)).resolves.toBeTruthy();
   });
 
   test(`getAppletInfo`, async () => {
-    const { username, password, applets } = await config;
-    const client = await Client.createClient(username, password);
+    const { applets } = await config;
+    const client = new Client(await authTokenService);
     await Promise.all(
       applets.map(async ({ appletId }) => {
         await expect(
@@ -52,8 +42,8 @@ describe(`Client`, () => {
   });
 
   test(`getAppletData`, async () => {
-    const { username, password, applets } = await config;
-    const client = await Client.createClient(username, password);
+    const { applets } = await config;
+    const client = new Client(await authTokenService);
     await Promise.all(
       applets.map(async ({ appletId }) => {
         await expect(

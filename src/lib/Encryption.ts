@@ -4,16 +4,14 @@ import { AppletData, AppletInfo } from "./Responses";
 
 // See https://github.com/ChildMindInstitute/mindlogger-admin/blob/3ccaeb6e23820d480658155014c66179bc7bd112/src/Components/Utils/encryption/encryption.vue#L8
 const combineKeys = (parts: string[]): Buffer =>
-  Buffer.from(
-    parts
-      .map((part) => createHash(`sha512`).update(part).digest(`hex`))
-      .join(``),
+  Buffer.concat(
+    parts.map((part) => createHash(`sha512`).update(part).digest()),
   );
 
 const createAppletPrivateKeyHash = (
   accountId: string,
   appletPassword: string,
-): Buffer => combineKeys([accountId, appletPassword]);
+): Buffer => combineKeys([appletPassword, accountId]);
 
 const createAppletRespondentKey = (
   appletPrime: Buffer,
@@ -36,6 +34,12 @@ const decryptAppletResponse = (
   const iv = Buffer.from(ivSeed, `hex`);
   const encryptedData = Buffer.from(parts.join(`:`), `hex`);
   const decipher = createDecipheriv(`aes-256-cbc`, respondentKeyHash, iv);
+  console.log({
+    ivSeed,
+    iv,
+    respondentKeyHash: respondentKeyHash.slice(0, 20),
+    encryptedData,
+  });
   const chunks = [decipher.update(encryptedData)];
   chunks.push(decipher.final());
   return Buffer.concat(chunks).toString();

@@ -139,6 +139,8 @@ export default {
   // The test environment that will be used for testing
   testEnvironment: `node`,
 
+  testTimeout: 30000,
+
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
 
