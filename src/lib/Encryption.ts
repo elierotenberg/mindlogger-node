@@ -1,27 +1,41 @@
+// See https://github.com/ChildMindInstitute/mindlogger-admin/blob/3ccaeb6e23820d480658155014c66179bc7bd112/src/Components/Utils/encryption/encryption.vue#L8
 import { createDecipheriv, createDiffieHellman, createHash } from "crypto";
+
+import BufferBrowserPolyfill from "../../node_modules/buffer";
+
+const BufferPolyfillToString = (
+  BufferBrowserPolyfill as unknown as {
+    Buffer: {
+      prototype: {
+        toString: () => string;
+      };
+    };
+  }
+).Buffer.prototype.toString;
 
 import { AppletData, AppletInfo } from "./Responses";
 
-// See https://github.com/ChildMindInstitute/mindlogger-admin/blob/3ccaeb6e23820d480658155014c66179bc7bd112/src/Components/Utils/encryption/encryption.vue#L8
-const combineKeys = (parts: string[]): Buffer =>
-  Buffer.from(
-    parts
-      .map((part) => createHash(`sha512`).update(part).digest(`hex`))
-      .join(``),
-  );
-
-const createAppletPrivateKeyHash = (
-  accountId: string,
+const createAppletPrivateKey = (
   appletPassword: string,
-): Buffer => combineKeys([accountId, appletPassword]);
+  accountId: string,
+): Buffer => {
+  const buf1 = createHash(`sha512`).update(appletPassword).digest();
+  const buf2 = createHash(`sha512`).update(accountId).digest();
+  const s1 = BufferPolyfillToString.apply(buf1);
+  const s2 = BufferPolyfillToString.apply(buf2);
+  const s3 = s1 + s2;
+  const result = Buffer.from(s3);
+
+  return result;
+};
 
 const createAppletRespondentKey = (
   appletPrime: Buffer,
-  appletPrivateKeyHash: Buffer,
+  appletPrivateKey: Buffer,
   appletRespondentPublicKey: Buffer,
 ): Buffer => {
   const appletRespondentKey = createDiffieHellman(appletPrime);
-  appletRespondentKey.setPrivateKey(appletPrivateKeyHash);
+  appletRespondentKey.setPrivateKey(appletPrivateKey);
   const appletRespondentSecret = appletRespondentKey.computeSecret(
     appletRespondentPublicKey,
   );
@@ -29,13 +43,13 @@ const createAppletRespondentKey = (
 };
 
 const decryptAppletResponse = (
-  respondentKeyHash: Buffer,
+  respondentKey: Buffer,
   responseData: string,
 ): string => {
-  const [ivSeed, ...parts] = responseData.split(`:`);
-  const iv = Buffer.from(ivSeed, `hex`);
+  const [ivHex, ...parts] = responseData.split(`:`);
+  const iv = Buffer.from(ivHex, `hex`);
   const encryptedData = Buffer.from(parts.join(`:`), `hex`);
-  const decipher = createDecipheriv(`aes-256-cbc`, respondentKeyHash, iv);
+  const decipher = createDecipheriv(`aes-256-cbc`, respondentKey, iv);
   const chunks = [decipher.update(encryptedData)];
   chunks.push(decipher.final());
   return Buffer.concat(chunks).toString();
@@ -47,14 +61,14 @@ export const decryptAppletResponses = (
   appletPassword: string,
 ): { readonly responseId: string; readonly data: unknown }[] => {
   const appletPrime = Buffer.from(appletInfo.applet.encryption.appletPrime);
-  const appletPrivateKeyHash = createAppletPrivateKeyHash(
-    appletInfo.accountId,
+  const appletPrivateKey = createAppletPrivateKey(
     appletPassword,
+    appletInfo.accountId,
   );
   const respondentKeys = appletData.keys.map((appletRespondentPublicKey) =>
     createAppletRespondentKey(
       appletPrime,
-      appletPrivateKeyHash,
+      appletPrivateKey,
       Buffer.from(appletRespondentPublicKey),
     ),
   );
@@ -65,9 +79,7 @@ export const decryptAppletResponses = (
         throw new Error(`respondentKey not found: ${respondentKeyIndex}`);
       }
       return {
-        data: JSON.stringify(
-          decryptAppletResponse(respondentKey, responseData),
-        ),
+        data: JSON.parse(decryptAppletResponse(respondentKey, responseData)),
         responseId,
       };
     },

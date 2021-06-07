@@ -1,14 +1,14 @@
 {
   "name": "mindlogger-node",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "MindLogger client for node (CLI and library)",
   "main": "build/index.js",
   "scripts": {
     "build": "tsc -p .",
+    "clean": "rm -rf build",
     "cli": "node build/cli.js",
     "docs": "typedoc && ./build-mermaid.sh",
-    "test:src": "jest src/__tests__/*.test.ts",
-    "test": "jest build/__tests__/*.test.js"
+    "test": "npm run clean && npm run build && jest"
   },
   "bin": {
     "mindlogger-cli": "./build/cli.js"
@@ -24,34 +24,35 @@
   },
   "homepage": "https://github.com/elierotenberg/mindlogger-programmatic-bridge#readme",
   "devDependencies": {
-    "@babel/preset-env": "^7.14.2",
-    "@babel/preset-typescript": "^7.13.0",
-    "@mermaid-js/mermaid-cli": "^8.10.1",
-    "@openapitools/openapi-generator-cli": "^2.3.0",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-typescript": "^7.14.5",
+    "@mermaid-js/mermaid-cli": "^8.10.2",
+    "@openapitools/openapi-generator-cli": "^2.3.5",
     "@types/jest": "^26.0.23",
     "@types/js-yaml": "^4.0.1",
-    "@types/node": "^15.6.0",
+    "@types/node": "^15.12.4",
     "@types/node-fetch": "^2.5.10",
     "@types/yargs": "^17.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.24.0",
-    "@typescript-eslint/parser": "^4.24.0",
-    "eslint": "^7.26.0",
+    "@typescript-eslint/eslint-plugin": "^4.28.0",
+    "@typescript-eslint/parser": "^4.28.0",
+    "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.23.2",
+    "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-prettier": "^3.4.0",
-    "jest": "^26.6.3",
-    "npm-check-updates": "^11.5.13",
-    "prettier": "^2.3.0",
-    "ts-node": "^9.1.1",
-    "typedoc": "^0.20.36",
-    "typedoc-plugin-markdown": "^3.8.1",
-    "typescript": "^4.2.4"
+    "jest": "^27.0.5",
+    "npm-check-updates": "^11.7.1",
+    "prettier": "^2.3.1",
+    "ts-node": "^10.0.0",
+    "typedoc": "^0.21.0",
+    "typedoc-plugin-markdown": "^3.10.0",
+    "typescript": "^4.3.4"
   },
   "dependencies": {
+    "buffer": "^6.0.3",
     "js-yaml": "^4.1.0",
     "node-fetch": "^2.6.1",
-    "tslib": "^2.2.0",
+    "tslib": "^2.3.0",
     "yargs": "^17.0.1",
-    "zod": "^3.0.2"
+    "zod": "^3.2.0"
   }
 }

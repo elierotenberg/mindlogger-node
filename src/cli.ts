@@ -1,10 +1,14 @@
 #!/usr/bin/env node
 import { promises } from "fs";
+import { readFile } from "fs/promises";
 import { resolve } from "path";
 
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import { z } from "zod";
+
+import { AppletData, AppletInfo } from "./lib/Responses";
+import { decryptAppletResponses } from "./lib/Encryption";
 
 import { Client } from ".";
 
@@ -20,7 +24,7 @@ const main = async (): Promise<void> => {
   ): Promise<void> => {
     const json = JSON.stringify(data, null, 2);
     if (outFile) {
-      await promises.writeFile(resolve(__dirname, outFile), json, {
+      await promises.writeFile(resolve(process.cwd(), outFile), json, {
         encoding: `utf-8`,
       });
     } else {
@@ -30,18 +34,6 @@ const main = async (): Promise<void> => {
 
   await yargs(hideBin(process.argv))
     .options({
-      username: {
-        type: `string`,
-        alias: `u`,
-        demandOption: true,
-        description: `User name`,
-      },
-      password: {
-        type: `string`,
-        alias: `p`,
-        demandOption: true,
-        description: `Password`,
-      },
       outFile: {
         type: `string`,
         alias: `o`,
@@ -51,7 +43,21 @@ const main = async (): Promise<void> => {
     .command(
       `authentication`,
       `Get authentication results`,
-      async ({ argv }) => {
+      {
+        username: {
+          type: `string`,
+          alias: `u`,
+          demandOption: true,
+          description: `User name`,
+        },
+        password: {
+          type: `string`,
+          alias: `p`,
+          demandOption: true,
+          description: `Password`,
+        },
+      },
+      async (argv) => {
         const { username, password, outFile } = z
           .object({
             username: z.string(),
@@ -67,13 +73,26 @@ const main = async (): Promise<void> => {
       `applet-info`,
       `Get applet info`,
       {
+        username: {
+          type: `string`,
+          alias: `u`,
+          demandOption: true,
+          description: `User name`,
+        },
+        password: {
+          type: `string`,
+          alias: `p`,
+          demandOption: true,
+          description: `Password`,
+        },
         appletId: {
           type: `string`,
+          alias: `a`,
           description: `Applet Id`,
           demandOption: true,
         },
       },
-      async ({ argv }) => {
+      async (argv) => {
         const { username, password, outFile, appletId } = z
           .object({
             username: z.string(),
@@ -90,13 +109,26 @@ const main = async (): Promise<void> => {
       `applet-data`,
       `Get applet data`,
       {
+        username: {
+          type: `string`,
+          alias: `u`,
+          demandOption: true,
+          description: `User name`,
+        },
+        password: {
+          type: `string`,
+          alias: `p`,
+          demandOption: true,
+          description: `Password`,
+        },
         appletId: {
           type: `string`,
+          alias: `a`,
           description: `Applet Id`,
           demandOption: true,
         },
       },
-      async ({ argv }) => {
+      async (argv) => {
         const { username, password, outFile, appletId } = z
           .object({
             username: z.string(),
@@ -107,6 +139,63 @@ const main = async (): Promise<void> => {
           .parse(argv);
         const client = await Client.createClient(username, password);
         await print(outFile, await client.getAppletData(appletId));
+      },
+    )
+    .command(
+      `decrypt-applet-data`,
+      `Decrypt applet data`,
+      {
+        appletPassword: {
+          type: `string`,
+          alias: `p`,
+          description: `Applet password`,
+          demandOption: true,
+        },
+        appletInfo: {
+          type: `string`,
+          alias: `i`,
+          description: `Applet info file`,
+          demandOption: true,
+        },
+        appletData: {
+          type: `string`,
+          alias: `d`,
+          description: `Applet data file`,
+          demandOption: true,
+        },
+      },
+      async (argv) => {
+        const {
+          outFile,
+          appletPassword,
+          appletInfo: appletInfoFile,
+          appletData: appletDataFile,
+        } = z
+          .object({
+            outFile: z.string().optional(),
+            appletPassword: z.string(),
+            appletInfo: z.string(),
+            appletData: z.string(),
+          })
+          .parse(argv);
+        const appletInfo = await readFile(
+          resolve(process.cwd(), appletInfoFile),
+          {
+            encoding: `utf-8`,
+          },
+        ).then((appletInfo) => AppletInfo.parse(JSON.parse(appletInfo)));
+        const appletData = await readFile(
+          resolve(process.cwd(), appletDataFile),
+          {
+            encoding: `utf-8`,
+          },
+        ).then((appletData) => AppletData.parse(JSON.parse(appletData)));
+        const appletResponses = await decryptAppletResponses(
+          appletInfo,
+          appletData,
+          appletPassword,
+        );
+        await print(outFile, JSON.stringify(appletResponses, null, 2));
       },
     )
     .help()
