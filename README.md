@@ -33,16 +33,15 @@ npm i mindlogger-node
 
 ```
 Commands:
-  cli.js authentication  Get authentication results
-  cli.js applet-info     Get applet info
-  cli.js applet-data     Get applet data
+  cli.js authentication       Get authentication results
+  cli.js applet-info          Get applet info
+  cli.js applet-data          Get applet data
+  cli.js decrypt-applet-data  Decrypt applet data
 
 Options:
-      --version   Show version number                                  [boolean]
-  -u, --username  User name                                  [string] [required]
-  -p, --password  Password                                   [string] [required]
-  -o, --outFile   Optional output file                                  [string]
-      --help      Show help                                            [boolean]
+      --version  Show version number                                   [boolean]
+  -o, --outFile  Optional output file                                   [string]
+      --help     Show help                                             [boolean]
 ```
 
 ### Library

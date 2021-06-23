@@ -3,8 +3,7 @@ import { join } from "path";
 
 import { z } from "zod";
 
-import { Client } from "../lib/Client";
-import { AppletData, AppletInfo, Authentication } from "../lib/Responses";
+import { Client, AppletData, AppletInfo, Authentication } from "..";
 
 const config = promises
   .readFile(join(__dirname, `..`, `..`, `config.test.json`), {

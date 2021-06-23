@@ -28,25 +28,25 @@
 
 ### constructor
 
-\+ `Private` **new Client**(`authToken`: { `expires`:  ; `token`:   }): [*Client*](client.md)
+• `Private` **new Client**(`authToken`)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `authToken` | *object* |
-| `authToken.expires` | - |
-| `authToken.token` | - |
+| `authToken` | `Object` |
+| `authToken.expires` |  |
+| `authToken.token` |  |
 
-**Returns:** [*Client*](client.md)
+#### Defined in
 
-Defined in: lib/Client.ts:46
+[lib/Client.ts:46](https://github.com/elierotenberg/mindlogger-node/blob/d40e19b/src/lib/Client.ts#L46)
 
 ## Properties
 
 ### authToken
 
-• `Private` **authToken**: *object*
+• `Private` **authToken**: `Object`
 
 #### Type declaration
 
@@ -55,7 +55,9 @@ Defined in: lib/Client.ts:46
 | `expires` |  |
 | `token` |  |
 
-Defined in: lib/Client.ts:46
+#### Defined in
+
+[lib/Client.ts:46](https://github.com/elierotenberg/mindlogger-node/blob/d40e19b/src/lib/Client.ts#L46)
 
 ___
 
@@ -63,133 +65,167 @@ ___
 
 ▪ `Static` `Readonly` **baseURL**: ``"https://api.mindlogger.org"``
 
-Defined in: lib/Client.ts:6
+#### Defined in
+
+[lib/Client.ts:6](https://github.com/elierotenberg/mindlogger-node/blob/d40e19b/src/lib/Client.ts#L6)
 
 ## Methods
 
 ### fetch
 
-▸ `Private` `Readonly` **fetch**(`path`: *string*, `info?`: { `body?`: BodyInit ; `headers?`: *Record*<string, unknown\> ; `method?`: *string*  }): *Promise*<unknown\>
+▸ `Private` `Readonly` **fetch**(`path`, `info?`): `Promise`<unknown\>
 
 #### Parameters
 
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `path` | *string* | - |
-| `info` | *object* | {} |
-| `info.body?` | BodyInit | - |
-| `info.headers?` | *Record*<string, unknown\> | - |
-| `info.method?` | *string* | - |
+| Name | Type |
+| :------ | :------ |
+| `path` | `string` |
+| `info` | `Object` |
+| `info.body?` | `BodyInit` |
+| `info.headers?` | `Record`<string, unknown\> |
+| `info.method?` | `string` |
 
-**Returns:** *Promise*<unknown\>
+#### Returns
 
-Defined in: lib/Client.ts:52
+`Promise`<unknown\>
+
+#### Defined in
+
+[lib/Client.ts:52](https://github.com/elierotenberg/mindlogger-node/blob/d40e19b/src/lib/Client.ts#L52)
 
 ___
 
 ### getAppletData
 
-▸ `Readonly` **getAppletData**(`appletId`: *string*): *Promise*<{ `dataSources`:  ; `keys`:  ; `responses`:   }\>
+▸ `Readonly` **getAppletData**(`appletId`): `Promise`<`Object`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `appletId` | *string* |
+| `appletId` | `string` |
 
-**Returns:** *Promise*<{ `dataSources`:  ; `keys`:  ; `responses`:   }\>
+#### Returns
 
-Defined in: lib/Client.ts:76
+`Promise`<`Object`\>
+
+#### Defined in
+
+[lib/Client.ts:76](https://github.com/elierotenberg/mindlogger-node/blob/d40e19b/src/lib/Client.ts#L76)
 
 ___
 
 ### getAppletInfo
 
-▸ `Readonly` **getAppletInfo**(`appletId`: *string*): *Promise*<{ `accountId`:  ; `applet`:  ; `items`:   }\>
+▸ `Readonly` **getAppletInfo**(`appletId`): `Promise`<`Object`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `appletId` | *string* |
+| `appletId` | `string` |
 
-**Returns:** *Promise*<{ `accountId`:  ; `applet`:  ; `items`:   }\>
+#### Returns
 
-Defined in: lib/Client.ts:71
+`Promise`<`Object`\>
+
+#### Defined in
+
+[lib/Client.ts:71](https://github.com/elierotenberg/mindlogger-node/blob/d40e19b/src/lib/Client.ts#L71)
 
 ___
 
 ### getAuth
 
-▸ `Readonly` **getAuth**(): *Promise*<{ `account`:  ; `authToken`:  ; `user`:   }\>
+▸ `Readonly` **getAuth**(): `Promise`<`Object`\>
 
-**Returns:** *Promise*<{ `account`:  ; `authToken`:  ; `user`:   }\>
+#### Returns
 
-Defined in: lib/Client.ts:68
+`Promise`<`Object`\>
+
+#### Defined in
+
+[lib/Client.ts:68](https://github.com/elierotenberg/mindlogger-node/blob/d40e19b/src/lib/Client.ts#L68)
 
 ___
 
 ### refreshToken
 
-▸ `Readonly` **refreshToken**(`username`: *string*, `password`: *string*): *Promise*<void\>
+▸ `Readonly` **refreshToken**(`username`, `password`): `Promise`<void\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `username` | *string* |
-| `password` | *string* |
+| `username` | `string` |
+| `password` | `string` |
 
-**Returns:** *Promise*<void\>
+#### Returns
 
-Defined in: lib/Client.ts:39
+`Promise`<void\>
+
+#### Defined in
+
+[lib/Client.ts:39](https://github.com/elierotenberg/mindlogger-node/blob/d40e19b/src/lib/Client.ts#L39)
 
 ___
 
 ### createClient
 
-▸ `Static` `Readonly` **createClient**(`username`: *string*, `password`: *string*): *Promise*<[*Client*](client.md)\>
+▸ `Static` `Readonly` **createClient**(`username`, `password`): `Promise`<[Client](client.md)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `username` | *string* |
-| `password` | *string* |
+| `username` | `string` |
+| `password` | `string` |
 
-**Returns:** *Promise*<[*Client*](client.md)\>
+#### Returns
 
-Defined in: lib/Client.ts:30
+`Promise`<[Client](client.md)\>
+
+#### Defined in
+
+[lib/Client.ts:30](https://github.com/elierotenberg/mindlogger-node/blob/d40e19b/src/lib/Client.ts#L30)
 
 ___
 
 ### fetchAuthToken
 
-▸ `Static` `Private` `Readonly` **fetchAuthToken**(`username`: *string*, `password`: *string*): *Promise*<{ `expires`:  ; `token`:   }\>
+▸ `Static` `Private` `Readonly` **fetchAuthToken**(`username`, `password`): `Promise`<`Object`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `username` | *string* |
-| `password` | *string* |
+| `username` | `string` |
+| `password` | `string` |
 
-**Returns:** *Promise*<{ `expires`:  ; `token`:   }\>
+#### Returns
 
-Defined in: lib/Client.ts:10
+`Promise`<`Object`\>
+
+#### Defined in
+
+[lib/Client.ts:10](https://github.com/elierotenberg/mindlogger-node/blob/d40e19b/src/lib/Client.ts#L10)
 
 ___
 
 ### url
 
-▸ `Static` `Readonly` **url**(`path`: *string*): URL
+▸ `Static` `Readonly` **url**(`path`): `URL`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `path` | *string* |
+| `path` | `string` |
 
-**Returns:** URL
+#### Returns
 
-Defined in: lib/Client.ts:7
+`URL`
+
+#### Defined in
+
+[lib/Client.ts:7](https://github.com/elierotenberg/mindlogger-node/blob/d40e19b/src/lib/Client.ts#L7)

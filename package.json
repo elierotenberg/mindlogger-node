@@ -1,6 +1,6 @@
 {
   "name": "mindlogger-node",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "MindLogger client for node (CLI and library)",
   "main": "build/index.js",
   "scripts": {
